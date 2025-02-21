@@ -1,0 +1,79 @@
+import React, { useState } from "react";
+
+const questions = [
+  { question: "What is your favorite color?", options: ["Red", "Blue", "Green", "Yellow"] },
+  { question: "What is your ideal vacation?", options: ["Beach", "Mountains", "City", "Countryside"] },
+  { question: "Pick a pet:", options: ["Dog", "Cat", "Bird", "Fish"] },
+];
+
+const PersonalityQuiz = () => {
+  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
+  const [result, setResult] = useState(null);
+  const [clicked, setClicked] = useState(Array(questions.length).fill(null));
+
+  const handleAnswer = (index, option) => {
+    const newAnswers = [...answers];
+    newAnswers[index] = option;
+    setAnswers(newAnswers);
+
+    const newClicked = [...clicked];
+    newClicked[index] = option;
+    setClicked(newClicked);
+  };
+
+  const calculateResult = () => {
+    setResult("I have no idea what your personality is based off these arbitrary answers. You should just hire Nick Juliano for your UX/UI designer role.");
+  };
+
+  const clearAll = () => {
+    setAnswers(Array(questions.length).fill(null));
+    setClicked(Array(questions.length).fill(null));
+    setResult(null);
+  };
+
+  return (
+    <div className="quiz-container" style={{ maxWidth: "600px", margin: "auto", textAlign: "center" }}>
+      <h1>Personality Quiz</h1>
+      {questions.map((q, index) => (
+        <div key={index} style={{ marginBottom: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "8px" }}>
+          <p style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>{q.question}</p>
+          {q.options.map((option) => (
+            <button 
+              key={option} 
+              onClick={() => handleAnswer(index, option)}
+              style={{ 
+                margin: "5px", 
+                padding: "10px 15px", 
+                borderRadius: "5px", 
+                border: "none", 
+                backgroundColor: clicked[index] === option ? "#003366" : "#007bff", 
+                color: "white", 
+                cursor: "pointer", 
+                fontWeight: clicked[index] === option ? "bold" : "normal", 
+                opacity: clicked[index] === option ? 1 : 0.8,
+                transition: "background-color 0.3s, opacity 0.3s, font-weight 0.3s"
+              }}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      ))}
+      <button 
+        onClick={calculateResult} 
+        style={{ padding: "10px 20px", marginTop: "20px", marginRight: "10px", borderRadius: "5px", border: "none", backgroundColor: "#28a745", color: "white", cursor: "pointer" }}
+      >
+        Get Result
+      </button>
+      <button 
+        onClick={clearAll} 
+        style={{ padding: "10px 20px", marginTop: "20px", borderRadius: "5px", border: "none", backgroundColor: "#dc3545", color: "white", cursor: "pointer" }}
+      >
+        Clear All
+      </button>
+      {result && <h2 style={{ marginTop: "20px", color: "#333" }}>{result}</h2>}
+    </div>
+  );
+};
+
+export default PersonalityQuiz;
